@@ -1,0 +1,29 @@
+<div class="page-header">
+  <h1><%= @client.name %> Integration</h1>
+  <p>Manage your AI Client settings and capabilities.</p>
+</div>
+
+<div class="client-intro-card">
+  <div class="client-logo">
+    <span class="client-logo-large">
+      <%= @client.name.downcase == 'claude' ? '🧠' : '💻' %>
+    </span>
+  </div>
+
+  <div class="client-details">
+    <h2>About <%= @client.name %></h2>
+    
+    <% if @client.name.downcase == 'claude' %>
+      <p><strong>Claude</strong> is a next-generation AI assistant built by Anthropic, designed for complex reasoning, advanced coding, and fluent conversation.</p>
+      <p>By toggling MCP Servers on your main dashboard, you grant Claude the secure ability to read your local files, search your databases, and interact with your connected web APIs.</p>
+    <% elsif @client.name.downcase == 'cursor' %>
+      <p><strong>Cursor</strong> is an AI-first code editor built to supercharge your development workflow by understanding your entire codebase.</p>
+    <% else %>
+      <p>This is your custom registered AI client, connected to your MCP Hub.</p>
+    <% end %>
+  </div>
+
+  <div class="client-actions">
+    <%= link_to "← Back to Servers", mcp_servers_path, class: "btn-secondary" %>
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<div class="page-header">
+  <h1>My AI Clients</h1>
+  <p>Manage the local applications connected to your MCP Hub.</p>
+</div>
+
+<div class="table-container">
+  <table class="mcp-table">
+    <thead>
+      <tr>
+        <th>Client Name</th>
+        <th>Connected Servers</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    
+    <tbody>
+      <% if @clients.any? %>
+        <% @clients.each do |client| %>
+          <tr>
+            <td class="server-name">
+              <strong>
+                <%= client.name.downcase == 'claude' ? '🧠' : (client.name.downcase == 'cursor' ? '💻' : '🤖') %> 
+                <%= client.name %>
+              </strong>
+            </td>
+            
+            <td>
+              <span class="toggle-badge badge-active"><%= current_user.mcp_servers.count %> Active</span>
+            </td>
+            
+            <td class="row-actions">
+              <%= link_to "View Details", client_path(client), class: "btn-secondary btn-small", style: "text-decoration: none;" %>
+            </td>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr>
+          <td colspan="3" style="text-align: center; padding: 40px; color: #888;">
+            No clients found. Add one below!
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div class="table-bottom-actions">
+    <button class="btn-primary">+ Add New Client</button>
+  </div>
+</div>

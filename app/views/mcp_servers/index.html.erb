@@ -1,0 +1,22 @@
+<div class="page-header">
+  <h1>MCP Servers</h1>
+  <p>Manage and toggle your Model Compute Provider integrations.</p>
+</div>
+
+<div class="table-container">
+  <table class="mcp-table">
+    <thead>
+      <tr>
+        <th>MCP Server</th>
+        <th>Description</th>
+        <th>Tools Available</th>
+        <th>Connection Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    
+    <tbody>
+      <%= render partial: 'server_row', collection: @mcp_servers, as: :server %>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,34 @@
+<%# Check if the user is connected to this specific server %>
+<% connection = @user_connections.find_by(mcp_server: server) %>
+
+<tr>
+  <td class="server-name">
+    <strong><%= server.name %></strong>
+  </td>
+
+  <td>
+    <span style="color: #666; font-size: 14px;"><%= server.description %></span>
+  </td>
+
+  <td>
+    <%= link_to "#{server.tools.count} Tools", mcp_server_tools_path(server), class: "tools-link" %>
+  </td>
+
+  <td>
+    <% if connection %>
+      <span class="toggle-badge badge-active">Active</span>
+    <% else %>
+      <span class="toggle-badge badge-inactive">Inactive</span>
+    <% end %>
+  </td>
+
+  <td class="row-actions">
+    <%= link_to edit_mcp_server_path(server), class: "btn-secondary btn-small" do %>
+     ✏️
+    <% end %>
+
+    <%= button_to mcp_server_path(server), method: :delete, class: "btn-danger", data: { confirm: "Are you sure?" } do %>
+        🗑️
+    <% end %>
+</td>
+</tr>

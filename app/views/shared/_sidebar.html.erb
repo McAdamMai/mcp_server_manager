@@ -1,0 +1,42 @@
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <span class="logo-text">MCP Toggle</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section">
+      <%= link_to mcp_servers_path, class: "nav-item" do %>
+        <span class="icon">🌐</span> Global Catalog
+      <% end %>
+      <%= link_to clients_path, class: "nav-item" do %>
+        <span class="icon">🖥️</span> Manage Clients
+      <% end %>
+    </div>
+
+    <div class="nav-section">
+      <h3 class="nav-heading">My Clients</h3>
+      <% current_user.clients.each do |client| %>
+        <%= link_to client_path(client), class: "nav-sub-item" do %>
+          <span class="icon">⚡️</span> <%= client.name %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="nav-section">
+      <h3 class="nav-heading">Active Servers</h3>
+      <% current_user.mcp_servers.each do |server| %>
+        <%= link_to mcp_server_tools_path(server), class: "nav-sub-item" do %>
+          <span class="icon">🔌</span> <%= server.name %>
+        <% end %>
+      <% end %>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <%= link_to settings_path, class: "nav-item" do %>
+      <span class="icon">⚙️</span> Settings
+    <% end %>
+    
+    <%= button_to "Log Out", logout_path, method: :delete, class: "logout-btn" %>
+  </div>
+</aside>

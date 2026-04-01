@@ -1,0 +1,42 @@
+<div class="modal-backdrop">
+  <div class="floating-window settings-window">
+    
+    <div class="window-header">
+      <div class="header-text">
+        <h2>Account Settings</h2>
+        <p>Update your profile photo and preferences.</p>
+      </div>
+      <%= link_to "✕", mcp_servers_path, class: "close-window-btn", title: "Close" %>
+    </div>
+
+    <div class="window-content">
+      <%= form_with(model: @user, url: settings_path, method: :patch, class: "settings-form") do |f| %>
+        
+        <div class="avatar-upload-section">
+          <div class="avatar-preview">
+            <% if @user.avatar.attached? %>
+              <%= image_tag @user.avatar, class: "profile-photo-square" %>
+            <% else %>
+              <div class="avatar-placeholder-square">
+                <span style="font-size: 32px;">👤</span>
+                <span class="placeholder-text">No Photo</span>
+              </div>
+            <% end %>
+          </div>
+
+          <div class="upload-controls">
+            <%= f.label :avatar, "Upload New Photo", class: "btn-secondary upload-label" %>
+            <%= f.file_field :avatar, class: "hidden-file-input", accept: "image/png, image/jpeg" %>
+            <p class="upload-hint">Recommended size: 400x400px (JPG or PNG)</p>
+          </div>
+        </div>
+
+        <div class="settings-actions" style="display: flex; justify-content: flex-end; align-items: center; gap: 16px; padding-top: 20px; border-top: 1px solid #eee;">
+            <%= link_to "Cancel", mcp_servers_path, class: "btn-secondary", style: "border: none; color: #6b46c1;" %>
+            <%= f.submit "Save Changes", class: "btn-primary" %>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+</div>

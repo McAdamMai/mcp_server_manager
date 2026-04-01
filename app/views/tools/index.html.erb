@@ -1,0 +1,39 @@
+<div class="modal-backdrop">
+  
+  <div class="floating-window">
+    
+    <div class="window-header">
+      <div class="header-text">
+        <h2><%= @mcp_server.name %> Tools</h2>
+        <p>Manage the tools available for this integration.</p>
+      </div>
+      <%= link_to "✕", mcp_servers_path, class: "close-window-btn", title: "Close" %>
+    </div>
+
+    <div class="window-content">
+      <% if @tools.any? %>
+        <ul class="tools-list">
+          <% @tools.each do |tool| %>
+            <li class="tool-item">
+              <div class="tool-info">
+                <strong><%= tool.name %></strong>
+                <span class="tool-desc"><%= tool.description %></span>
+              </div>
+              <button class="btn-secondary btn-small">Test</button>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <div class="empty-state">
+          <span class="icon" style="font-size: 24px; margin-bottom: 10px; display: block;">🧰</span>
+          <p>No tools configured for this server yet.</p>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="window-footer">
+      <button class="btn-primary">Add New Tool</button>
+    </div>
+
+  </div>
+</div>
