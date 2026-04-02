@@ -1,6 +1,9 @@
 class User < ApplicationRecord
-  # Phase 1 Authentication requirement
-  has_secure_password
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable,
+         :jwt_authenticatable, jwt_revocation_strategy: self
 
   # 1:N Relationship (A user can have many AI clients like Claude or Cursor)
   has_many :clients, dependent: :destroy
@@ -17,4 +20,13 @@ class User < ApplicationRecord
   has_one :user_setting, dependent: :destroy
 
   has_one_attached :avatar
+
+  # Ensure existing users get a JTI if they don't have one
+  before_create :set_jti
+
+  private
+
+  def set_jti
+    self.jti ||= SecureRandom.uuid
+  end
 end

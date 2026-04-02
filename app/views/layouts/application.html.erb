@@ -13,7 +13,7 @@
   <body>
     <div class="app-container">
       <!-- Rendering the DRY Sidebar Partial -->
-      <% if logged_in? %>
+      <% if user_signed_in? %>
         <%= render 'shared/sidebar' %>
       <% end %>
 

@@ -1,27 +1,40 @@
 Rails.application.routes.draw do
-  get "clients/show"
-  # 1. Custom Authentication Routes (No Devise yet!)
-  get    "signup", to: "users#new"
-  post   "signup", to: "users#create"
-  get    "login",  to: "sessions#new"
-  post   "login",  to: "sessions#create"
-  delete "logout", to: "sessions#destroy"
+  # ==========================================
+  # PHASE 2: API Endpoints (JSON for Postman)
+  # ==========================================
+  namespace :api, defaults: { format: :json } do
+    namespace :v1 do
+     devise_scope :user do
+        post 'login', to: 'users/sessions#create'
+        post 'signup', to: 'users/registrations#create'
+        delete 'logout', to: 'users/sessions#destroy'
+      end
+
+      resources :mcp_servers, only: [:index, :show]
+      resources :connections, only: [:create, :destroy]
+      resources :clients, only: [:index, :show, :destroy]
+  end
+end
+
+  # ==========================================
+  # PHASE 1: Web UI Routes (HTML for Browser)
+  # ==========================================
+  # This creates the standard web login pages (e.g., /users/sign_in)
+  devise_for :users 
+
+  # Connections
   post   "connect_server/:mcp_server_id",    to: "connections#create",  as: :connect_server
   delete "disconnect_server/:mcp_server_id", to: "connections#destroy", as: :disconnect_server
+  
+  # Settings
   get   "settings", to: "users#edit",   as: :settings
   patch "settings", to: "users#update"
 
-  # 2. The Nested Resource (10 Points)
-  # This makes URLs look like: /mcp_servers/1/tools
   resources :mcp_servers do
     resources :tools
   end
 
-  # 3. Standard Resources
   resources :clients
-  resources :users, only: [:create]
 
-  # 4. The Root Path
-  # This is the page that loads when someone goes to your main URL (e.g., localhost:3000)
   root "mcp_servers#index"
 end

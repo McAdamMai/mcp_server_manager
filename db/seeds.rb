@@ -1,13 +1,34 @@
-# Clear existing data so you don't get duplicates if you run it twice
 puts "Cleaning database..."
-User.destroy_all
-McpServer.destroy_all
+
+# Using delete_all in the right order to prevent relationship crashes
+Connection.delete_all
+Tool.delete_all
+Client.delete_all
+McpServer.delete_all
+UserSetting.delete_all
+User.delete_all
 
 puts "Creating Test Accounts..."
-# We create 3 distinct test users as required
-user1 = User.create!(email: "admin@test.com", password: "password123", password_confirmation: "password123")
-user2 = User.create!(email: "grader@mcmaster.ca", password: "password123", password_confirmation: "password123")
-user3 = User.create!(email: "student@test.com", password: "password123", password_confirmation: "password123")
+
+# We assign this one to 'user1' so we can give them clients later
+user1 = User.create!(
+  email: "admin@test.com",
+  password: "password123",
+  password_confirmation: "password123"
+)
+
+User.create!(
+  email: "grader@mcmaster.ca",
+  password: "password123",
+  password_confirmation: "password123"
+)
+
+User.create!(
+  email: "student@test.com",
+  password: "password123",
+  password_confirmation: "password123"
+)
+puts "✅ Test users created!"
 
 puts "Creating Global MCP Servers..."
 # Recreating the exact rows from your mockup image
@@ -19,14 +40,13 @@ servers = [
   McpServer.create!(name: "GitHub", description: "Repo and PR management")
 ]
 
-puts "Creating AI Clients for User 1..."
-# Recreating the columns from your mockup image
+puts "Creating AI Clients for Admin..."
+# Now user1 actually exists, so this won't crash!
 client1 = user1.clients.create!(name: "Claude")
 client2 = user1.clients.create!(name: "Cursor")
 
 puts "Adding standard tools to ALL servers..."
 
-# The tools you requested
 standard_tools = [
   { name: "shell", description: "Execute command-line operations" },
   { name: "read", description: "Read files and retrieve data" },
@@ -46,7 +66,7 @@ McpServer.all.each do |server|
 end
 
 puts "----------------------------------------"
-puts "Seeding Complete!"
+puts "✅ Seeding Complete!"
 puts "Test Accounts Details (Include these in your submission!):"
 puts "Email: admin@test.com | Password: password123"
 puts "Email: grader@mcmaster.ca | Password: password123"

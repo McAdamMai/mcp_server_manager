@@ -37,6 +37,6 @@
       <span class="icon">⚙️</span> Settings
     <% end %>
     
-    <%= button_to "Log Out", logout_path, method: :delete, class: "logout-btn" %>
+    <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "logout-btn" %>
   </div>
 </aside>

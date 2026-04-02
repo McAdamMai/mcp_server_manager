@@ -1,22 +1,19 @@
 class ConnectionsController < ApplicationController
-  def create
-    @server = McpServer.find(params[:mcp_server_id])
-    
-    # find_or_create_by prevents the user from accidentally connecting twice!
-    current_user.connections.find_or_create_by(mcp_server: @server)
-    
-    # Redirect back to the dashboard with a success flash message
-    redirect_to mcp_servers_path, notice: "Successfully connected to #{@server.name}!"
-  end
+  before_action :authenticate_user!
 
-  def destroy
-    @server = McpServer.find(params[:mcp_server_id])
+  def create
+    @server = McpServer.find_by(id: params[:mcp_server_id])
+
+    if @server
+      connection = current_user.connections.find_or_initialize_by(mcp_server: @server)
+      connection.is_active = true
     
-    # Find the specific connection and delete it
-    connection = current_user.connections.find_by(mcp_server: @server)
-    connection.destroy if connection
-    
-    # Redirect back to the dashboard
-    redirect_to mcp_servers_path, alert: "Disconnected from #{@server.name}."
+      if connection.save
+        # TRIGGER THE EMAIL HERE
+        # deliver_later sends it in the background so the API stays fast!
+        NotificationMailer.with(user: current_user, server: @server).server_connected_email.deliver_later
+      
+        render json: { message: "Connected to #{@server.name}" }, status: :created
+      end
+    end
   end
-end

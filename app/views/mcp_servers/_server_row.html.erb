@@ -22,13 +22,21 @@
     <% end %>
   </td>
 
-  <td class="row-actions">
-    <%= link_to edit_mcp_server_path(server), class: "btn-secondary btn-small" do %>
-     ✏️
+  <td class="row-actions" style="display: flex; gap: 8px;">
+    <%# --- TOGGLE CONNECT/DISCONNECT (Replacing the Pencil) --- %>
+    <% if connection %>
+      <%= button_to disconnect_server_path(server), method: :delete, class: "btn-secondary btn-small", title: "Disconnect" do %>
+        🔌 <%# Disconnect Icon %>
+      <% end %>
+    <% else %>
+      <%= button_to connect_server_path(server), method: :post, class: "btn-secondary btn-small", title: "Connect" do %>
+        ⚡ <%# Connect/Activate Icon %>
+      <% end %>
     <% end %>
 
+    <%# --- KEEP DELETE --- %>
     <%= button_to mcp_server_path(server), method: :delete, class: "btn-danger", data: { confirm: "Are you sure?" } do %>
-        🗑️
+      🗑️
     <% end %>
-</td>
+  </td>
 </tr>

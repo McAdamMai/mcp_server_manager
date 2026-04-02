@@ -1,0 +1,33 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <h2>Welcome Back</h2>
+      <p>Log in to manage your MCP servers.</p>
+    </div>
+
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "auth-form" }) do |f| %>
+      <div class="form-group">
+        <%= f.label :email, class: "form-label" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "admin@test.com", required: true, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :password, class: "form-label" %>
+        <%= f.password_field :password, autocomplete: "current-password", required: true, class: "form-control" %>
+      </div>
+
+      <% if devise_mapping.rememberable? %>
+        <div class="form-group" style="display: flex; align-items: center; gap: 8px; margin-bottom: 15px;">
+          <%= f.check_box :remember_me %>
+          <%= f.label :remember_me, style: "margin: 0; font-size: 0.9em; color: #666;" %>
+        </div>
+      <% end %>
+
+      <%= f.submit "Log In", class: "btn-primary btn-block" %>
+    <% end %>
+
+    <div class="auth-links" style="margin-top: 15px; text-align: center;">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</div>
